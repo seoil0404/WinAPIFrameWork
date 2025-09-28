@@ -17,5 +17,5 @@ VS_OUTPUT VSMain(VS_INPUT input) {
 
 // а撚 樁檜渦
 float4 PSMain(VS_OUTPUT input) : SV_TARGET{
-    return float4(1.0f, 0.0f, 0.0f, 1.0f); // 說除儀
+    return float4(1.0f, 1.0f, 1.0f, 1.0f); // 說除儀
 }

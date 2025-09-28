@@ -1,19 +1,25 @@
 #pragma once
 #include <d3d11.h>
 #include <dxgi.h>
+#include <vector>
+#include "Object.h"
 
 class Scene
 {
 public:
-	ID3D11Buffer* GetVertexBuffer();
-	ID3D11Buffer* GetIndexBuffer();
-protected:
-	ID3D11Buffer* vertexBuffer;
-	ID3D11Buffer* indexBuffer;
+	Scene(std::vector<Object*> objects);
+	Scene();
+	~Scene();
+
+public:
+	void Awake();
+	void Update();
+private:
+	std::vector<Object*> objects;
 };
 
-class TriangleScene : public Scene
+class SceneManager
 {
 public:
-	TriangleScene();
+	static Scene CurrentScene;
 };

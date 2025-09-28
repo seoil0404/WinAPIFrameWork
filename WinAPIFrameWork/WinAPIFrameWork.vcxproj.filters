@@ -18,7 +18,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="WinMain.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Vector.cpp">
@@ -33,6 +33,27 @@
     <ClCompile Include="Debug.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector.h">
@@ -41,7 +62,7 @@
     <ClInclude Include="Scene.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="Main.h">
+    <ClInclude Include="WinGlobal.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
@@ -51,6 +72,24 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Debug.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Main.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderManager.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

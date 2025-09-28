@@ -1,6 +1,6 @@
 #include "Shader.h"
 #include "File.h"
-#include "Main.h"
+#include "WinGlobal.h"
 #include <d3dcompiler.h>
 
 void ShaderManager::SetBasicShader(std::filesystem::path filePath)
