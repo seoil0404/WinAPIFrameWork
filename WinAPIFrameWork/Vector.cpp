@@ -23,7 +23,8 @@ bool Vector3::operator==(const Vector3& other) const
 {
     if (x == other.x && y == other.y && z == other.z)
         return true;
-    else false;
+    
+    return false;
 }
 
 
@@ -48,5 +49,6 @@ bool Vector2::operator==(const Vector2& other) const
 {
     if (x == other.x && y == other.y)
         return true;
-    else false;
+    
+    return false;
 }

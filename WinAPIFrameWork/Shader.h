@@ -2,7 +2,8 @@
 #include <d3d11.h>
 #include <dxgi.h>
 #include <string>
-#include "File.h"
+#include <map>
+#include <filesystem>
 
 struct Shader
 {
@@ -11,10 +12,10 @@ struct Shader
 	ID3D11InputLayout* inputLayout = nullptr;
 };
 
-inline Shader g_BasicShader;
-
 class ShaderManager
 {
 public:
-	static void SetBasicShader(std::filesystem::path filePath);
+	static Shader* LoadShader(std::filesystem::path filePath);
+private:
+	static std::map<std::string, Shader*> shaderData;
 };

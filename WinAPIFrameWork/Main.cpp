@@ -9,11 +9,16 @@
 
 void System::Awake()
 {
-	ShaderManager::SetBasicShader("BasicShader.hlsl");
+	Shader* shader = ShaderManager::LoadShader("BasicShader.hlsl");
 	std::vector<Object*> objects;
 	Object* object = new Object();
 	object->AddComponent(new TriangleRenderer());
-	object->position = Vector3(0.2f, 0, 0);
+	object->position = Vector3(0.2f, 0.2f, 0);
+	objects.push_back(object);
+
+	object = new Object();
+	object->AddComponent(new TriangleRenderer());
+	object->position = Vector3(-0.2f, -0.2f, 0);
 	objects.push_back(object);
 	
 	SceneManager::CurrentScene = Scene(objects);
@@ -29,9 +34,5 @@ void System::Update()
 
 void System::Render()
 {
-	g_context->ClearRenderTargetView(g_renderTargetView, RenderManager::BackgroundColor.data());
-
-	RenderManager::Render();
-
-	g_swapChain->Present(1, 0);
+	RenderManager::Render();	
 }

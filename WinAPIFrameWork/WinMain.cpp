@@ -85,8 +85,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
         L"DirectX Black Screen",
         WS_POPUP,
         0, 0, 
-        g_viewPort.x,
-        g_viewPort.y,
+        (int)(g_viewPort.x),
+        (int)(g_viewPort.y),
         nullptr, nullptr, hInstance, nullptr
     );
 

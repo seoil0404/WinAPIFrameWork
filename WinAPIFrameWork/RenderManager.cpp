@@ -59,6 +59,8 @@ ID3D11Buffer* RenderManager::GetIndexBuffer(unsigned int* indices, unsigned int 
 
 void RenderManager::Render()
 {
+    g_context->ClearRenderTargetView(g_renderTargetView, RenderManager::BackgroundColor.data());
+
     UINT stride = sizeof(Vector3);
     UINT offset = 0;
 
@@ -75,6 +77,16 @@ void RenderManager::Render()
         g_context->PSSetShader(currentDrawCall.shader->pixelShader, nullptr, 0);
 
         g_context->DrawIndexed(currentDrawCall.indexCount, 0, 0);
+
+        
+    }
+
+    g_swapChain->Present(1, 0);
+
+    for (int index = 0; index < drawCalls.size(); index++)
+    {
+        drawCalls[index].indexBuffer->Release();
+        drawCalls[index].vertexBuffer->Release();
     }
 
     drawCalls.clear();

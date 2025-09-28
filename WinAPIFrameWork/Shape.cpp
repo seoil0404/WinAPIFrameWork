@@ -27,5 +27,8 @@ void TriangleRenderer::Update()
 	ID3D11Buffer* vertexBuffer = RenderManager::GetVertexBuffer(vertices, VERTEX_SIZE);
 	ID3D11Buffer* indexBuffer = RenderManager::GetIndexBuffer(indices, INDEX_SIZE);
 
-	RenderManager::Draw(INDEX_SIZE, vertexBuffer, indexBuffer, &g_BasicShader);
+	RenderManager::Draw(INDEX_SIZE, vertexBuffer, indexBuffer, ShaderManager::LoadShader("BasicShader.hlsl"));
+
+	delete[] vertices;
+	delete[] indices;
 }

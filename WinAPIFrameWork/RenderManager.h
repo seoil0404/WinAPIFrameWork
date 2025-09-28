@@ -3,9 +3,9 @@
 #include <vector>
 #include <array>
 
-class ID3D11Buffer;
-class Shader;
-class Vector3;
+struct ID3D11Buffer;
+struct Shader;
+struct Vector3;
 
 struct DrawCall
 {

@@ -3,14 +3,21 @@
 #include "WinGlobal.h"
 #include <d3dcompiler.h>
 
-void ShaderManager::SetBasicShader(std::filesystem::path filePath)
+std::map<std::string, Shader*> ShaderManager::shaderData;
+
+Shader* ShaderManager::LoadShader(std::filesystem::path filePath)
 {
+    if (shaderData.contains(filePath.string()))
+        return shaderData[filePath.string()];
+
+    Shader* shader = new Shader;
+
     ID3DBlob* vsBlob = nullptr;
     ID3DBlob* psBlob = nullptr;
     ID3DBlob* errorBlob = nullptr;
 
     auto fullPath = (BasePath / filePath);
-    
+
     // 버텍스 셰이더 컴파일
     HRESULT hr = D3DCompileFromFile(
         fullPath.c_str(), nullptr, nullptr,
@@ -20,10 +27,10 @@ void ShaderManager::SetBasicShader(std::filesystem::path filePath)
     if (FAILED(hr)) throw;
 
     g_device->CreateVertexShader(
-        vsBlob->GetBufferPointer(), 
-        vsBlob->GetBufferSize(), 
-        nullptr, 
-        &g_BasicShader.vertexShader
+        vsBlob->GetBufferPointer(),
+        vsBlob->GetBufferSize(),
+        nullptr,
+        &shader->vertexShader
     );
 
     // 픽셀 셰이더 컴파일
@@ -35,10 +42,10 @@ void ShaderManager::SetBasicShader(std::filesystem::path filePath)
     if (FAILED(hr)) throw;
 
     g_device->CreatePixelShader(
-        psBlob->GetBufferPointer(), 
-        psBlob->GetBufferSize(), 
-        nullptr, 
-        &g_BasicShader.pixelShader
+        psBlob->GetBufferPointer(),
+        psBlob->GetBufferSize(),
+        nullptr,
+        &shader->pixelShader
     );
 
     // 입력 레이아웃 (POSITION만)
@@ -50,9 +57,11 @@ void ShaderManager::SetBasicShader(std::filesystem::path filePath)
     g_device->CreateInputLayout(
         layout, 1,
         vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(),
-        &g_BasicShader.inputLayout
+        &shader->inputLayout
     );
 
     vsBlob->Release();
     psBlob->Release();
+
+    shaderData[filePath.string()] = shader;
 }
