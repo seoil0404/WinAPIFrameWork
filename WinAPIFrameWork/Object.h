@@ -14,6 +14,7 @@ public:
 
 public:
 	Vector3 position;
+	float scale = 1;
 
 public:
 	void AddComponent(Component* component);

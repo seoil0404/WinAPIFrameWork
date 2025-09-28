@@ -3,14 +3,14 @@
 #include "Object.h"
 #include "Debug.h"
 
-void Renderer::SyncPosition(Vector3* vertices, unsigned int vertexSize)
+void Renderer::SyncVertex(Vector3* vertices, unsigned int vertexSize)
 {
 	Vector3 basePosition = object->position;
 
 	for (unsigned int index = 0; index < vertexSize; index++)
 	{
-		vertices[index].x += basePosition.x;
-		vertices[index].y += basePosition.y;
-		vertices[index].z += basePosition.z;
+		vertices[index].x = vertices[index].x * object->scale + basePosition.x;
+		vertices[index].y = vertices[index].y * object->scale + basePosition.y;
+		vertices[index].z = vertices[index].z * object->scale + basePosition.z;
 	}
 }

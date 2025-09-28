@@ -138,6 +138,7 @@
     <ClCompile Include="RenderManager.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shape.cpp" />
+    <ClCompile Include="Time.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderManager.h" />
     <ClInclude Include="Shape.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="WinGlobal.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
