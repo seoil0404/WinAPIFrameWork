@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector.h"
 #include <vector>
+#include <DirectXMath.h>
 
 class Component;
 
@@ -14,7 +15,11 @@ public:
 
 public:
 	Vector3 position;
-	float scale = 1;
+	Vector3 scale = { 1,1,1 };
+	Vector3 rotation = { 0, 0, 0 };
+
+public:
+	DirectX::XMMATRIX GetWorldMatrix() const;
 
 public:
 	void AddComponent(Component* component);

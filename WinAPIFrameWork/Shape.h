@@ -16,3 +16,9 @@ class BoxRenderer : public Renderer
 public:
 	void Update() override;
 };
+
+class CubeRenderer : public Renderer
+{
+public:
+	void Update() override;
+};

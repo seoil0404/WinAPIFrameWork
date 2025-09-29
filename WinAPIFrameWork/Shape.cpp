@@ -18,8 +18,6 @@ void TriangleRenderer::Update()
 	vertices[1] = { 0.5f, -0.5f, 0.0f };  // ¿À¸¥ÂÊ ¾Æ·¡
 	vertices[2] = { -0.5f, -0.5f, 0.0f };  // ¿ÞÂÊ ¾Æ·¡
 
-	SyncVertex(vertices, VERTEX_SIZE);
-
 	indices[0] = 0;
 	indices[1] = 1;
 	indices[2] = 2;
@@ -27,7 +25,7 @@ void TriangleRenderer::Update()
 	ID3D11Buffer* vertexBuffer = RenderManager::GetVertexBuffer(vertices, VERTEX_SIZE);
 	ID3D11Buffer* indexBuffer = RenderManager::GetIndexBuffer(indices, INDEX_SIZE);
 
-	RenderManager::Draw(INDEX_SIZE, vertexBuffer, indexBuffer, ShaderManager::LoadShader("BasicShader.hlsl"));
+	RenderManager::Draw((*object), INDEX_SIZE, vertexBuffer, indexBuffer, ShaderManager::LoadShader("BasicShader.hlsl"));
 
 	delete[] vertices;
 	delete[] indices;
@@ -51,12 +49,63 @@ void BoxRenderer::Update()
 		0, 2, 3
 	};
 
-	SyncVertex(vertices, VERTEX_SIZE);
+	ID3D11Buffer* vertexBuffer = RenderManager::GetVertexBuffer(vertices, VERTEX_SIZE);
+	ID3D11Buffer* indexBuffer = RenderManager::GetIndexBuffer(indices, INDEX_SIZE);
+
+	RenderManager::Draw((*object), INDEX_SIZE, vertexBuffer, indexBuffer, ShaderManager::LoadShader("BasicShader.hlsl"));
+
+	delete[] vertices;
+	delete[] indices;
+}
+
+void CubeRenderer::Update()
+{
+	constexpr unsigned int VERTEX_SIZE = 8;
+	constexpr unsigned int INDEX_SIZE = 36;
+
+	auto vertices = new Vector3[VERTEX_SIZE]
+	{
+		{ -0.5f, -0.5f, -0.5f }, // 0: left-bottom-back
+		{ -0.5f,  0.5f, -0.5f }, // 1: left-top-back
+		{  0.5f,  0.5f, -0.5f }, // 2: right-top-back
+		{  0.5f, -0.5f, -0.5f }, // 3: right-bottom-back
+		{ -0.5f, -0.5f,  0.5f }, // 4: left-bottom-front
+		{ -0.5f,  0.5f,  0.5f }, // 5: left-top-front
+		{  0.5f,  0.5f,  0.5f }, // 6: right-top-front
+		{  0.5f, -0.5f,  0.5f }  // 7: right-bottom-front
+	};
+
+	auto indices = new unsigned int[INDEX_SIZE]
+	{
+			// µÞ¸é (z = -0.5)
+			0, 1, 2,
+			0, 2, 3,
+
+				// ¾Õ¸é (z = +0.5)
+				4, 6, 5,
+				4, 7, 6,
+
+				// ¿ÞÂÊ¸é (x = -0.5)
+				4, 5, 1,
+				4, 1, 0,
+
+				// ¿À¸¥ÂÊ¸é (x = +0.5)
+				3, 2, 6,
+				3, 6, 7,
+
+				// À­¸é (y = +0.5)
+				1, 5, 6,
+				1, 6, 2,
+
+				// ¾Æ·§¸é (y = -0.5)
+				4, 0, 3,
+				4, 3, 7
+	};
 
 	ID3D11Buffer* vertexBuffer = RenderManager::GetVertexBuffer(vertices, VERTEX_SIZE);
 	ID3D11Buffer* indexBuffer = RenderManager::GetIndexBuffer(indices, INDEX_SIZE);
 
-	RenderManager::Draw(INDEX_SIZE, vertexBuffer, indexBuffer, ShaderManager::LoadShader("BasicShader.hlsl"));
+	RenderManager::Draw((*object), INDEX_SIZE, vertexBuffer, indexBuffer, ShaderManager::LoadShader("BasicShader.hlsl"));
 
 	delete[] vertices;
 	delete[] indices;

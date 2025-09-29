@@ -16,6 +16,17 @@ Object::~Object()
 
 }
 
+DirectX::XMMATRIX Object::GetWorldMatrix() const
+{
+	using namespace DirectX;
+	
+	XMMATRIX S = XMMatrixScaling(scale.GetX(), scale.GetY(), scale.GetZ());
+	XMMATRIX R = XMMatrixRotationRollPitchYaw(rotation.GetX(), rotation.GetY(), rotation.GetZ());
+	XMMATRIX T = XMMatrixTranslation(position.GetX(), position.GetY(), position.GetZ());
+
+	return S * R * T;
+}
+
 void Object::AddComponent(Component* component)
 {
 	components.push_back(component);

@@ -1,6 +1,7 @@
 #include "RenderManager.h"
 #include <d3d11.h>
 #include <dxgi.h>
+#include <DirectXMath.h>
 #include "Shader.h"
 #include "Vector.h"
 #include "WinGlobal.h"
@@ -9,16 +10,13 @@ std::array<float, 4> RenderManager::BackgroundColor;
 std::vector<DrawCall> RenderManager::drawCalls;
 
 void RenderManager::Draw(
+    const Object& object,
 	unsigned int indexCount, 
 	ID3D11Buffer* vertexBuffer, 
 	ID3D11Buffer* indexBuffer, 
 	Shader* shader)
 {
-    DrawCall drawCall;
-    drawCall.indexCount = indexCount;
-    drawCall.vertexBuffer = vertexBuffer;
-    drawCall.indexBuffer = indexBuffer;
-    drawCall.shader = shader;
+    DrawCall drawCall(object, indexCount, vertexBuffer, indexBuffer, shader);
 
     drawCalls.push_back(drawCall);
 }
@@ -60,6 +58,7 @@ ID3D11Buffer* RenderManager::GetIndexBuffer(unsigned int* indices, unsigned int 
 void RenderManager::Render()
 {
     g_context->ClearRenderTargetView(g_renderTargetView, RenderManager::BackgroundColor.data());
+    g_context->ClearDepthStencilView(g_depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
     UINT stride = sizeof(Vector3);
     UINT offset = 0;
@@ -73,12 +72,16 @@ void RenderManager::Render()
         g_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
         g_context->IASetInputLayout(currentDrawCall.shader->inputLayout);
-        g_context->VSSetShader(currentDrawCall.shader->vertexShader, nullptr, 0);
-        g_context->PSSetShader(currentDrawCall.shader->pixelShader, nullptr, 0);
+        g_context->VSSetShader(currentDrawCall.shader->vertexShader, nullptr, (UINT)0);
+        g_context->PSSetShader(currentDrawCall.shader->pixelShader, nullptr, (UINT)0);
+
+        ConstantMVPBuffer cb;
+        cb.mvp = DirectX::XMMatrixTranspose(RenderManager::GetMVP(currentDrawCall.object));
+        g_context->UpdateSubresource(g_constantBuffer, 0, nullptr, &cb, 0, 0);
+
+        g_context->VSSetConstantBuffers(0, 1, &g_constantBuffer);
 
         g_context->DrawIndexed(currentDrawCall.indexCount, 0, 0);
-
-        
     }
 
     g_swapChain->Present(1, 0);
@@ -91,3 +94,35 @@ void RenderManager::Render()
 
     drawCalls.clear();
 }
+
+DirectX::XMMATRIX RenderManager::GetMVP(const Object& object)
+{
+    float width = g_viewPort.x;
+    float height = g_viewPort.y;
+
+    DirectX::XMMATRIX world = object.GetWorldMatrix();
+
+    DirectX::XMVECTOR eye = XMVectorSet(0.0f, 0.0f, -3.0f, 0.0f);
+    DirectX::XMVECTOR at = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+    DirectX::XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+    DirectX::XMMATRIX view = XMMatrixLookAtLH(eye, at, up);
+
+    // 프로젝션 행렬 (원근 투영, 45도 시야각)
+    float fovAngleY = XM_PIDIV4; // 45도
+    float aspect = width / height;
+    float nearZ = 0.1f;
+    float farZ = 100.0f;
+
+    DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovLH(fovAngleY, aspect, nearZ, farZ);
+
+    return world * view * projection;
+}
+
+DrawCall::DrawCall(
+    const Object& object,
+    unsigned int indexCount, 
+    ID3D11Buffer* vertexBuffer, 
+    ID3D11Buffer* indexBuffer, 
+    Shader* shader
+    ) : object(object), indexCount(indexCount), vertexBuffer(vertexBuffer), indexBuffer(indexBuffer), shader(shader)
+{ }

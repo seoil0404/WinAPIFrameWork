@@ -50,8 +50,7 @@ Shader* ShaderManager::LoadShader(std::filesystem::path filePath)
 
     // 입력 레이아웃 (POSITION만)
     D3D11_INPUT_ELEMENT_DESC layout[] = {
-        {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,
-         D3D11_INPUT_PER_VERTEX_DATA, 0}
+        {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
     };
 
     g_device->CreateInputLayout(
@@ -64,4 +63,6 @@ Shader* ShaderManager::LoadShader(std::filesystem::path filePath)
     psBlob->Release();
 
     shaderData[filePath.string()] = shader;
+
+    return shader;
 }

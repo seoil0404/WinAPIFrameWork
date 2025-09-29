@@ -10,5 +10,8 @@ inline ID3D11Device* g_device = nullptr;
 inline ID3D11DeviceContext* g_context = nullptr;
 inline IDXGISwapChain* g_swapChain = nullptr;
 inline ID3D11RenderTargetView* g_renderTargetView = nullptr;
+inline ID3D11Buffer* g_constantBuffer = nullptr;
+inline ID3D11Texture2D* g_depthStencilBuffer = nullptr;
+inline ID3D11DepthStencilView* g_depthStencilView = nullptr;
 
 inline const Vector2 g_viewPort = Vector2((float)(GetSystemMetrics(SM_CXSCREEN)), (float)(GetSystemMetrics(SM_CYSCREEN)));

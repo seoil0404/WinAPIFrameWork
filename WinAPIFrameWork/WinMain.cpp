@@ -64,6 +64,32 @@ bool InitD3D(HWND hWnd)
     g_context->RSSetViewports(1, &vp);
     backBuffer->Release();
 
+    D3D11_BUFFER_DESC cbd = {};
+    cbd.Usage = D3D11_USAGE_DEFAULT;
+    cbd.ByteWidth = sizeof(ConstantMVPBuffer);
+    cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+
+    hr = g_device->CreateBuffer(&cbd, nullptr, &g_constantBuffer);
+    if (FAILED(hr)) return false;
+
+    D3D11_TEXTURE2D_DESC depthDesc = {};
+    depthDesc.Width = (UINT)g_viewPort.x;   // 화면 크기와 동일
+    depthDesc.Height = (UINT)g_viewPort.y;
+    depthDesc.MipLevels = 1;
+    depthDesc.ArraySize = 1;
+    depthDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // 깊이24 + 스텐실8
+    depthDesc.SampleDesc.Count = 1;
+    depthDesc.Usage = D3D11_USAGE_DEFAULT;
+    depthDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+
+    hr = g_device->CreateTexture2D(&depthDesc, nullptr, &g_depthStencilBuffer);
+    if (FAILED(hr)) return false;
+
+    hr = g_device->CreateDepthStencilView(g_depthStencilBuffer, nullptr, &g_depthStencilView);
+    if (FAILED(hr)) return false;
+
+    g_depthStencilBuffer->Release();
+
     return true;
 }
 
