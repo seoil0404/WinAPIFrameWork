@@ -102,6 +102,7 @@ void CubeRenderer::Update()
 				4, 3, 7
 	};
 
+
 	ID3D11Buffer* vertexBuffer = RenderManager::GetVertexBuffer(vertices, VERTEX_SIZE);
 	ID3D11Buffer* indexBuffer = RenderManager::GetIndexBuffer(indices, INDEX_SIZE);
 
